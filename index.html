@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextStream | Access Control Registration</title>
+    <link rel="icon" href="https://nextstream.com/wp-content/uploads/2023/10/favicon.png" type="image/png">
+    
+    <style>
+        :root {
+            --ns-dark: #0a192f;
+            --ns-header: #172a45;
+            --ns-card: #112240;
+            --ns-green: #00ff9d;
+            --ns-light: #e6f1ff;
+            --ns-grey: #8892b0;
+            --ns-hover: #233554;
+            --ns-border: #1e3a5f;
+            --ns-remove: #ff6b6b;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--ns-dark);
+            color: var(--ns-light);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--ns-header);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 255, 157, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+
+        .logo-container img { height: 35px; display: block; }
+
+        .lang-selector { display: flex; gap: 10px; }
+        .lang-btn {
+            background: rgba(255,255,255,0.05);
+            color: var(--ns-light);
+            border: 1px solid var(--ns-grey);
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+        .lang-btn:hover, .lang-btn.active {
+            background: var(--ns-green);
+            color: var(--ns-dark);
+            border-color: var(--ns-green);
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.4);
+        }
+
+        .main-content { padding: 40px 20px; display: flex; justify-content: center; }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--ns-card);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            border: 1px solid var(--ns-border);
+        }
+
+        h1 { font-size: 1.8rem; color: var(--ns-green); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; text-align: center; }
+        .subtitle { color: var(--ns-grey); font-size: 0.95rem; margin-bottom: 30px; border-bottom: 1px solid var(--ns-border); padding-bottom: 20px; text-align: center; }
+        h2 { font-size: 1.2rem; color: var(--ns-light); margin-top: 40px; border-left: 4px solid var(--ns-green); padding-left: 15px; margin-bottom: 20px; }
+
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #ccd6f6; font-size: 0.9rem; }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            background: var(--ns-hover);
+            border: 1px solid var(--ns-border);
+            color: white;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--ns-green); }
+
+        /* Dynamic Cards (Visitors/Vehicles) */
+        .dynamic-list { display: flex; flex-direction: column; gap: 15px; }
+        .dynamic-card {
+            background: rgba(0,0,0,0.2);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--ns-border);
+            position: relative;
+        }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .card-title { color: var(--ns-green); font-weight: bold; font-size: 0.9rem; text-transform: uppercase; }
+        
+        .btn-remove {
+            background: transparent;
+            color: var(--ns-remove);
+            border: 1px solid var(--ns-remove);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+        .btn-remove:hover { background: var(--ns-remove); color: white; }
+
+        .btn-add {
+            background: transparent;
+            color: var(--ns-green);
+            border: 1px dashed var(--ns-green);
+            width: 100%;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: all 0.2s;
+        }
+        .btn-add:hover { background: rgba(0, 255, 157, 0.1); }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; }
+
+        .btn-submit {
+            background-color: var(--ns-green);
+            color: var(--ns-dark);
+            padding: 18px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 40px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0, 255, 157, 0.2); }
+
+        #output-area { margin-top: 40px; display: none; }
+        #output-text { width: 100%; height: 300px; background: #050f1e; color: #00ff9d; font-family: 'Consolas', monospace; padding: 20px; border: 1px solid var(--ns-border); border-radius: 6px; }
+        .copy-btn { background: var(--ns-grey); color: var(--ns-dark); padding: 12px 25px; border: none; cursor: pointer; margin-top: 15px; font-weight: bold; border-radius: 4px; }
+
+        @media (max-width: 600px) {
+            header { padding: 15px 20px; }
+            .container { padding: 20px; }
+            .grid-2, .grid-4 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <a href="https://nextstream.com" target="_blank">
+               <img src="https://nextstream.com/wp-content/themes/nextstream/assets/images/logo-nextstream-branca.svg" 
+                    alt="NextStream" 
+                    onerror="this.onerror=null; this.src='https://placehold.co/200x50/172a45/00ff9d?text=NEXTSTREAM&font=montserrat';">
+            </a>
+        </div>
+        <div class="lang-selector">
+            <button class="lang-btn active" onclick="setLanguage('pt')">PT</button>
+            <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+            <button class="lang-btn" onclick="setLanguage('es')">ES</button>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="container">
+            <h1 data-i18n="main_title">PRÉ-CADASTRO DE ACESSO</h1>
+            <p class="subtitle" data-i18n="subtitle">Data Center Access Request Form</p>
+
+            <form id="accessForm">
+                
+                <h2 data-i18n="sec1_title">1. Detalhes da Visita</h2>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label data-i18n="site_label">Unidade NextStream</label>
+                        <select id="siteSelect">
+                            <option value="">Selecione...</option>
+                            <optgroup label="Brasil">
+                                <option value="🇧🇷 Tamboré (SP)">Tamboré (SP)</option>
+                                <option value="🇧🇷 Curitiba (PR)">Curitiba (PR)</option>
+                            </optgroup>
+                            <optgroup label="LATAM">
+                                <option value="🇲🇽 Ixtlahuaca (MX)">Ixtlahuaca (MX)</option>
+                                <option value="🇨🇱 Paine (CL)">Paine (CL)</option>
+                                <option value="🇨🇱 Apoquindo (CL)">Apoquindo (CL)</option>
+                                <option value="🇵🇪 Lince (PE)">Lince (PE)</option>
+                                <option value="🇦🇷 Barracas (AR)">Barracas (AR)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="date_time_label">Data e Hora Prevista</label>
+                        <input type="datetime-local" id="visitDate" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="company_label">Empresa Visitante</label>
+                    <input type="text" id="companyName" placeholder="Ex: Kyndryl, Cliente Final, Fornecedor..." required>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="reason_label">Motivo do Acesso</label>
+                    <select id="visitReason">
+                        <option value="Manutenção Programada" data-i18n="opt_maint">Manutenção Programada</option>
+                        <option value="Instalação/Implantação" data-i18n="opt_install">Instalação/Implantação</option>
+                        <option value="Visita Comercial" data-i18n="opt_sales">Visita Comercial/Tour</option>
+                        <option value="Auditoria" data-i18n="opt_audit">Auditoria</option>
+                    </select>
+                </div>
+
+                <h2 data-i18n="sec2_title">2. Visitantes / Funcionários</h2>
+                <div id="visitorsList" class="dynamic-list">
+                    <div class="dynamic-card visitor-card">
+                        <div class="card-header">
+                            <span class="card-title" data-i18n="visitor_title">Visitante #1</span>
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="name_label">Nome Completo</label>
+                            <input type="text" class="vis-name" required>
+                        </div>
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label data-i18n="doc_type_label">Tipo Doc.</label>
+                                <select class="vis-doc-type">
+                                    <option value="RG">RG</option>
+                                    <option value="CPF">CPF</option>
+                                    <option value="CNH">CNH</option>
+                                    <option value="DNI/Cédula">DNI/Cédula (LATAM)</option>
+                                    <option value="Passaporte">Passaporte (Global)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="doc_num_label">Número Documento</label>
+                                <input type="text" class="vis-doc-num" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn-add" onclick="addVisitor()" data-i18n="btn_add_visitor">+ Adicionar Outro Visitante</button>
+
+                <h2 data-i18n="sec3_title">3. Veículos (Estacionamento)</h2>
+                <div id="vehiclesList" class="dynamic-list">
+                    </div>
+                <button type="button" class="btn-add" onclick="addVehicle()" data-i18n="btn_add_vehicle">+ Adicionar Veículo</button>
+
+                <div style="margin-top: 30px; background: rgba(0, 255, 157, 0.05); padding: 15px; border-radius: 6px; border: 1px solid var(--ns-green);">
+                    <label style="display: flex; align-items: start; gap: 10px; cursor: pointer;">
+                        <input type="checkbox" id="safetyCheck" required style="width: 20px; height: 20px; margin-top: 2px;">
+                        <span style="font-size: 0.9rem; font-weight: normal; color: var(--ns-light);" data-i18n="safety_text">
+                            Declaro que a equipe está ciente das normas de segurança (EPIs obrigatórios para áreas técnicas) e que portaremos documentos originais para identificação na portaria.
+                        </span>
+                    </label>
+                </div>
+
+                <button type="button" class="btn-submit" onclick="generateAccessRequest()" data-i18n="btn_generate">Gerar Solicitação de Acesso</button>
+            </form>
+
+            <div id="output-area">
+                <h3 data-i18n="output_title">📋 DADOS PARA ENVIAR À RECEPÇÃO/SEGURANÇA</h3>
+                <textarea id="output-text" readonly></textarea>
+                <button class="copy-btn" onclick="copyText()" data-i18n="btn_copy">Copiar Dados</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            pt: {
+                main_title: "PRÉ-CADASTRO DE ACESSO",
+                subtitle: "Formulário de Solicitação de Entrada - Data Centers NextStream",
+                sec1_title: "1. Detalhes da Visita",
+                site_label: "Unidade NextStream",
+                date_time_label: "Data e Hora Prevista",
+                company_label: "Empresa Visitante",
+                reason_label: "Motivo do Acesso",
+                opt_maint: "Manutenção Programada",
+                opt_install: "Instalação/Implantação",
+                opt_sales: "Visita Comercial/Tour",
+                opt_audit: "Auditoria",
+                sec2_title: "2. Visitantes / Funcionários",
+                visitor_title: "Visitante",
+                name_label: "Nome Completo",
+                doc_type_label: "Tipo Doc.",
+                doc_num_label: "Número Documento",
+                btn_add_visitor: "+ Adicionar Outro Visitante",
+                sec3_title: "3. Veículos (Estacionamento)",
+                vehicle_title: "Veículo",
+                make_label: "Marca/Modelo",
+                color_label: "Cor",
+                plate_label: "Placa",
+                btn_add_vehicle: "+ Adicionar Veículo",
+                safety_text: "Declaro que a equipe está ciente das normas de segurança (EPIs obrigatórios para áreas técnicas) e que portaremos documentos originais para identificação na portaria.",
+                btn_generate: "Gerar Solicitação de Acesso",
+                output_title: "📋 DADOS PARA ENVIAR À RECEPÇÃO/SEGURANÇA",
+                btn_copy: "Copiar Dados",
+                btn_remove: "Remover"
+            },
+            en: {
+                main_title: "ACCESS PRE-REGISTRATION",
+                subtitle: "Entry Request Form - NextStream Data Centers",
+                sec1_title: "1. Visit Details",
+                site_label: "NextStream Site",
+                date_time_label: "Expected Date & Time",
+                company_label: "Visiting Company",
+                reason_label: "Access Reason",
+                opt_maint: "Scheduled Maintenance",
+                opt_install: "Installation/Deployment",
+                opt_sales: "Sales Visit/Tour",
+                opt_audit: "Audit",
+                sec2_title: "2. Visitors / Employees",
+                visitor_title: "Visitor",
+                name_label: "Full Name",
+                doc_type_label: "Doc. Type",
+                doc_num_label: "Document Number",
+                btn_add_visitor: "+ Add Another Visitor",
+                sec3_title: "3. Vehicles (Parking)",
+                vehicle_title: "Vehicle",
+                make_label: "Make/Model",
+                color_label: "Color",
+                plate_label: "License Plate",
+                btn_add_vehicle: "+ Add Vehicle",
+                safety_text: "I declare the team is aware of safety rules (PPE required for technical areas) and we will carry original IDs for reception check-in.",
+                btn_generate: "Generate Access Request",
+                output_title: "📋 DATA FOR RECEPTION/SECURITY TEAM",
+                btn_copy: "Copy Data",
+                btn_remove: "Remove"
+            },
+            es: {
+                main_title: "PRE-REGISTRO DE ACCESO",
+                subtitle: "Formulario de Solicitud de Entrada - Data Centers NextStream",
+                sec1_title: "1. Detalles de la Visita",
+                site_label: "Unidad NextStream",
+                date_time_label: "Fecha y Hora Prevista",
+                company_label: "Empresa Visitante",
+                reason_label: "Motivo del Acceso",
+                opt_maint: "Mantenimiento Programado",
+                opt_install: "Instalación/Implementación",
+                opt_sales: "Visita Comercial/Tour",
+                opt_audit: "Auditoría",
+                sec2_title: "2. Visitantes / Empleados",
+                visitor_title: "Visitante",
+                name_label: "Nombre Completo",
+                doc_type_label: "Tipo Doc.",
+                doc_num_label: "Número Documento",
+                btn_add_visitor: "+ Agregar Otro Visitante",
+                sec3_title: "3. Vehículos (Estacionamiento)",
+                vehicle_title: "Vehículo",
+                make_label: "Marca/Modelo",
+                color_label: "Color",
+                plate_label: "Placa/Patente",
+                btn_add_vehicle: "+ Agregar Vehículo",
+                safety_text: "Declaro que el equipo conoce las normas de seguridad (EPP obligatorio en áreas técnicas) y portaremos documentos originales para identificación en recepción.",
+                btn_generate: "Generar Solicitud de Acceso",
+                output_title: "📋 DATOS PARA RECEPCIÓN/SEGURIDAD",
+                btn_copy: "Copiar Datos",
+                btn_remove: "Eliminar"
+            }
+        };
+
+        let currentLang = 'pt';
+        let visitorCount = 1;
+        let vehicleCount = 0;
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    if (el.tagName === 'INPUT' && el.type === 'button') el.value = translations[lang][key];
+                    else el.innerHTML = translations[lang][key];
+                }
+            });
+            
+            // Update remove buttons text
+            document.querySelectorAll('.btn-remove').forEach(btn => {
+                btn.innerHTML = translations[lang]['btn_remove'];
+            });
+
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.lang-btn[onclick="setLanguage('${lang}')"]`).classList.add('active');
+        }
+
+        function addVisitor() {
+            visitorCount++;
+            const div = document.createElement('div');
+            div.className = 'dynamic-card visitor-card';
+            div.innerHTML = `
+                <div class="card-header">
+                    <span class="card-title">${translations[currentLang].visitor_title} #${visitorCount}</span>
+                    <button type="button" class="btn-remove" onclick="this.parentElement.parentElement.remove()">${translations[currentLang].btn_remove}</button>
+                </div>
+                <div class="form-group">
+                    <label>${translations[currentLang].name_label}</label>
+                    <input type="text" class="vis-name" required>
+                </div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>${translations[currentLang].doc_type_label}</label>
+                        <select class="vis-doc-type">
+                            <option value="RG">RG</option>
+                            <option value="CPF">CPF</option>
+                            <option value="CNH">CNH</option>
+                            <option value="DNI/Cédula">DNI/Cédula (LATAM)</option>
+                            <option value="Passaporte">Passaporte (Global)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>${translations[currentLang].doc_num_label}</label>
+                        <input type="text" class="vis-doc-num" required>
+                    </div>
+                </div>
+            `;
+            document.getElementById('visitorsList').appendChild(div);
+        }
+
+        function addVehicle() {
+            vehicleCount++;
+            const div = document.createElement('div');
+            div.className = 'dynamic-card vehicle-card';
+            div.innerHTML = `
+                <div class="card-header">
+                    <span class="card-title">${translations[currentLang].vehicle_title} #${vehicleCount}</span>
+                    <button type="button" class="btn-remove" onclick="this.parentElement.parentElement.remove()">${translations[currentLang].btn_remove}</button>
+                </div>
+                <div class="grid-4">
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>${translations[currentLang].make_label}</label>
+                        <input type="text" class="veh-model" placeholder="Ex: Toyota Corolla" required>
+                    </div>
+                    <div class="form-group">
+                        <label>${translations[currentLang].color_label}</label>
+                        <input type="text" class="veh-color" required>
+                    </div>
+                    <div class="form-group">
+                        <label>${translations[currentLang].plate_label}</label>
+                        <input type="text" class="veh-plate" required>
+                    </div>
+                </div>
+            `;
+            document.getElementById('vehiclesList').appendChild(div);
+        }
+
+        function generateAccessRequest() {
+            // Validation
+            if(!document.getElementById('safetyCheck').checked) {
+                alert("Please acknowledge the safety rules.");
+                return;
+            }
+
+            const val = (id) => document.getElementById(id).value;
+            
+            // Collect Visitors
+            let visitorsStr = "";
+            document.querySelectorAll('.visitor-card').forEach((card, index) => {
+                const name = card.querySelector('.vis-name').value;
+                const type = card.querySelector('.vis-doc-type').value;
+                const num = card.querySelector('.vis-doc-num').value;
+                if(name) {
+                    visitorsStr += `   ${index + 1}. ${name} | ${type}: ${num}\n`;
+                }
+            });
+
+            // Collect Vehicles
+            let vehiclesStr = "";
+            const vehCards = document.querySelectorAll('.vehicle-card');
+            if (vehCards.length === 0) {
+                vehiclesStr = "   (Nenhum veículo / No vehicles)";
+            } else {
+                vehCards.forEach((card, index) => {
+                    const model = card.querySelector('.veh-model').value;
+                    const color = card.querySelector('.veh-color').value;
+                    const plate = card.querySelector('.veh-plate').value;
+                    if(model) {
+                        vehiclesStr += `   ${index + 1}. [${plate}] ${model} - ${color}\n`;
+                    }
+                });
+            }
+
+            const report = `
+=== NEXTSTREAM ACCESS REQUEST ===
+[Language: ${currentLang.toUpperCase()}]
+
+1. VISIT INFO
+Site: ${val('siteSelect')}
+Date/Time: ${val('visitDate').replace('T', ' ')}
+Company: ${val('companyName')}
+Reason: ${val('visitReason')}
+
+2. VISITORS LIST
+${visitorsStr}
+
+3. VEHICLES
+${vehiclesStr}
+
+4. SAFETY DECLARATION
+[x] Aware of safety rules & PPE requirements.
+=================================
+`;
+            const outArea = document.getElementById('output-area');
+            const outText = document.getElementById('output-text');
+            outText.value = report;
+            outArea.style.display = 'block';
+            outArea.scrollIntoView({behavior: "smooth"});
+        }
+
+        function copyText() {
+            const copyText = document.getElementById("output-text");
+            copyText.select();
+            navigator.clipboard.writeText(copyText.value);
+            alert("Copiado!");
+        }
+    </script>
+
+</body>
+</html>
