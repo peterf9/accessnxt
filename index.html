@@ -17,6 +17,7 @@
             --ns-hover: #233554;
             --ns-border: #1e3a5f;
             --ns-remove: #ff6b6b;
+            --ns-info: #ffab00; /* Cor para avisos de atenção */
         }
 
         body {
@@ -93,6 +94,35 @@
             transition: border-color 0.3s;
         }
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--ns-green); }
+
+        /* Map Button */
+        #mapContainer { margin-top: 10px; display: none; }
+        .btn-map {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #233554;
+            color: var(--ns-green);
+            border: 1px solid var(--ns-green);
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .btn-map:hover { background: var(--ns-green); color: var(--ns-dark); }
+
+        /* Info Box (Vehicle Rules) */
+        .info-box {
+            background: rgba(255, 171, 0, 0.1);
+            border-left: 4px solid var(--ns-info);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 0 4px 4px 0;
+            font-size: 0.9rem;
+            color: #ffdca8;
+        }
 
         /* Dynamic Cards */
         .dynamic-list { display: flex; flex-direction: column; gap: 15px; }
@@ -190,7 +220,7 @@
                 <div class="grid-2">
                     <div class="form-group">
                         <label data-i18n="site_label">Unidade NextStream</label>
-                        <select id="siteSelect">
+                        <select id="siteSelect" onchange="updateLocationInfo()">
                             <option value="">Selecione...</option>
                             <optgroup label="Brasil">
                                 <option value="🇧🇷 Tamboré (SP)">Tamboré (SP)</option>
@@ -204,6 +234,11 @@
                                 <option value="🇦🇷 Barracas (AR)">Barracas (AR)</option>
                             </optgroup>
                         </select>
+                        <div id="mapContainer">
+                            <a href="#" target="_blank" id="mapLink" class="btn-map">
+                                📍 <span data-i18n="btn_map">Ver Localização / Como Chegar</span>
+                            </a>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label data-i18n="date_time_label">Data e Hora Prevista</label>
@@ -236,12 +271,12 @@
                         </div>
                         <div class="grid-2">
                             <div class="form-group">
-                                <label data-i18n="doc_rg_label">RG / ID / Passaporte</label>
-                                <input type="text" class="vis-doc-rg" placeholder="Doc. Identidade" required>
+                                <label data-i18n="doc_rg_label">RG / RNE / Passaporte</label>
+                                <input type="text" class="vis-doc-rg" required>
                             </div>
                             <div class="form-group">
                                 <label data-i18n="doc_cpf_label">CPF</label>
-                                <input type="text" class="vis-doc-cpf" placeholder="000.000.000-00">
+                                <input type="text" class="vis-doc-cpf">
                             </div>
                         </div>
                     </div>
@@ -249,6 +284,15 @@
                 <button type="button" class="btn-add" onclick="addVisitor()" data-i18n="btn_add_visitor">+ Adicionar Outro Visitante</button>
 
                 <h2 data-i18n="sec3_title">3. Veículos (Estacionamento)</h2>
+                
+                <div class="info-box">
+                    <strong data-i18n="vehicle_rules_title">⚠️ Normas de Acesso com Veículo:</strong><br>
+                    <span data-i18n="vehicle_rules_text">
+                        Por normas de segurança operacional, solicitamos que estacione de ré na portaria para identificação. 
+                        A segurança indicará sua vaga no estacionamento principal, com encontro imediato na recepção do prédio.
+                    </span>
+                </div>
+
                 <div id="vehiclesList" class="dynamic-list">
                     </div>
                 <button type="button" class="btn-add" onclick="addVehicle()" data-i18n="btn_add_vehicle">+ Adicionar Veículo</button>
@@ -287,14 +331,16 @@
                 opt_install: "Instalação/Implantação",
                 opt_sales: "Visita Comercial/Tour",
                 opt_audit: "Auditoria",
+                btn_map: "Ver Localização / Como Chegar",
                 sec2_title: "2. Visitantes / Funcionários",
                 visitor_title: "Visitante",
                 name_label: "Nome Completo",
-                // Labels Atualizados
                 doc_rg_label: "RG / RNE / Passaporte",
                 doc_cpf_label: "CPF",
                 btn_add_visitor: "+ Adicionar Outro Visitante",
                 sec3_title: "3. Veículos (Estacionamento)",
+                vehicle_rules_title: "⚠️ Normas de Acesso com Veículo:",
+                vehicle_rules_text: "Por normas de segurança operacional, solicitamos que estacione de ré na portaria para identificação. A segurança indicará sua vaga no estacionamento principal, com encontro imediato na recepção do prédio.",
                 vehicle_title: "Veículo",
                 make_label: "Marca/Modelo",
                 color_label: "Cor",
@@ -318,14 +364,16 @@
                 opt_install: "Installation/Deployment",
                 opt_sales: "Sales Visit/Tour",
                 opt_audit: "Audit",
+                btn_map: "See Location / How to Arrive",
                 sec2_title: "2. Visitors / Employees",
                 visitor_title: "Visitor",
                 name_label: "Full Name",
-                // Labels Updated for Global Context
                 doc_rg_label: "ID / Passport",
                 doc_cpf_label: "Tax ID (CPF for Brazil)",
                 btn_add_visitor: "+ Add Another Visitor",
                 sec3_title: "3. Vehicles (Parking)",
+                vehicle_rules_title: "⚠️ Vehicle Access Rules:",
+                vehicle_rules_text: "For operational safety, please reverse park at the entrance for identification. Security will direct you to the main parking area, meeting immediately at the reception.",
                 vehicle_title: "Vehicle",
                 make_label: "Make/Model",
                 color_label: "Color",
@@ -349,14 +397,16 @@
                 opt_install: "Instalación/Implementación",
                 opt_sales: "Visita Comercial/Tour",
                 opt_audit: "Auditoría",
+                btn_map: "Ver Ubicación / Cómo Llegar",
                 sec2_title: "2. Visitantes / Empleados",
                 visitor_title: "Visitante",
                 name_label: "Nombre Completo",
-                // Labels Atualizados
                 doc_rg_label: "DNI / Pasaporte / Cédula",
                 doc_cpf_label: "CPF / Tax ID",
                 btn_add_visitor: "+ Agregar Otro Visitante",
                 sec3_title: "3. Vehículos (Estacionamiento)",
+                vehicle_rules_title: "⚠️ Normas de Acceso con Vehículo:",
+                vehicle_rules_text: "Por normas de seguridad operativa, solicitamos estacionar de reversa en la portería para identificación. Seguridad indicará su lugar en el estacionamiento principal, con encuentro inmediato en la recepción.",
                 vehicle_title: "Vehículo",
                 make_label: "Marca/Modelo",
                 color_label: "Color",
@@ -393,11 +443,24 @@
             document.querySelector(`.lang-btn[onclick="setLanguage('${lang}')"]`).classList.add('active');
         }
 
+        function updateLocationInfo() {
+            const site = document.getElementById('siteSelect').value;
+            const mapContainer = document.getElementById('mapContainer');
+            const mapLink = document.getElementById('mapLink');
+
+            // Lógica para links (Você pode adicionar os outros no futuro)
+            if (site.includes("Tamboré")) {
+                mapLink.href = "https://share.google/TTWyMGk8RG8lBE8X4";
+                mapContainer.style.display = "block";
+            } else {
+                mapContainer.style.display = "none";
+            }
+        }
+
         function addVisitor() {
             visitorCount++;
             const div = document.createElement('div');
             div.className = 'dynamic-card visitor-card';
-            // Note: Mantendo os labels atualizados (RG e CPF separados)
             div.innerHTML = `
                 <div class="card-header">
                     <span class="card-title">${translations[currentLang].visitor_title} #${visitorCount}</span>
@@ -464,7 +527,6 @@
                 const cpf = card.querySelector('.vis-doc-cpf').value;
                 
                 if(name) {
-                    // Formatação condicional: se tiver CPF, mostra. Se não, mostra só RG/ID.
                     const docString = cpf ? `RG: ${rg} | CPF: ${cpf}` : `ID: ${rg}`;
                     visitorsStr += `   ${index + 1}. ${name} [${docString}]\n`;
                 }
@@ -503,7 +565,7 @@ ${visitorsStr}
 ${vehiclesStr}
 
 4. SAFETY DECLARATION
-[x] Aware of safety rules & PPE requirements.
+[x] Aware of safety rules, PPE requirements & Reverse Parking.
 =================================
 `;
             const outArea = document.getElementById('output-area');
