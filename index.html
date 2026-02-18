@@ -3,97 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NextStream | Access Control Registration</title>
+    <title>NextStream | Visitor Access Registration</title>
     <link rel="icon" href="https://nextstream.com/wp-content/uploads/2023/10/favicon.png" type="image/png">
     
     <style>
         :root {
-            --ns-dark: #0a192f;
-            --ns-header: #172a45;
-            --ns-card: #112240;
-            --ns-green: #00ff9d;
-            --ns-light: #e6f1ff;
-            --ns-grey: #8892b0;
-            --ns-hover: #233554;
-            --ns-border: #1e3a5f;
-            --ns-remove: #ff6b6b;
-            --ns-info: #ffab00; /* Cor para avisos de atenção */
+            /* CORPORATE LIGHT THEME */
+            --ns-navy: #0a192f;      /* Azul Escuro Institucional */
+            --ns-blue: #0056b3;      /* Azul Link/Acento */
+            --ns-green: #00d084;     /* Verde NextStream (Acento) */
+            --ns-bg: #f4f6f8;        /* Fundo Cinza Suave */
+            --ns-card: #ffffff;      /* Fundo Branco */
+            --ns-text: #334e68;      /* Texto Cinza Escuro */
+            --ns-border: #dbe2e8;    /* Bordas Suaves */
+            --ns-remove: #e02424;    /* Vermelho Alerta */
+            --ns-info-bg: #fff8e1;   /* Fundo Info */
+            --ns-info-border: #ffab00; /* Borda Info */
         }
 
         body {
             font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-            background-color: var(--ns-dark);
-            color: var(--ns-light);
+            background-color: var(--ns-bg);
+            color: var(--ns-text);
             line-height: 1.6;
             margin: 0;
             padding: 0;
         }
 
+        /* HEADER BRANCO CORPORATIVO */
         header {
-            background-color: var(--ns-header);
+            background-color: var(--ns-card);
             padding: 15px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(0, 255, 157, 0.2);
+            border-bottom: 3px solid var(--ns-green); /* Acento da marca */
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        .logo-container img { height: 35px; display: block; }
+        .logo-container img { height: 45px; display: block; }
 
-        .lang-selector { display: flex; gap: 10px; }
+        .lang-selector { display: flex; gap: 8px; }
         .lang-btn {
-            background: rgba(255,255,255,0.05);
-            color: var(--ns-light);
-            border: 1px solid var(--ns-grey);
-            padding: 6px 12px;
+            background: transparent;
+            color: var(--ns-text);
+            border: 1px solid var(--ns-border);
+            padding: 6px 14px;
             cursor: pointer;
             border-radius: 20px;
             font-weight: 600;
             font-size: 0.75rem;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
+            transition: all 0.2s;
         }
         .lang-btn:hover, .lang-btn.active {
-            background: var(--ns-green);
-            color: var(--ns-dark);
-            border-color: var(--ns-green);
-            box-shadow: 0 0 15px rgba(0, 255, 157, 0.4);
+            background: var(--ns-navy);
+            color: white;
+            border-color: var(--ns-navy);
         }
 
         .main-content { padding: 40px 20px; display: flex; justify-content: center; }
         .container {
             width: 100%;
-            max-width: 800px;
+            max-width: 850px;
             background: var(--ns-card);
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            padding: 50px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             border: 1px solid var(--ns-border);
         }
 
-        h1 { font-size: 1.8rem; color: var(--ns-green); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; text-align: center; }
-        .subtitle { color: var(--ns-grey); font-size: 0.95rem; margin-bottom: 30px; border-bottom: 1px solid var(--ns-border); padding-bottom: 20px; text-align: center; }
-        h2 { font-size: 1.2rem; color: var(--ns-light); margin-top: 40px; border-left: 4px solid var(--ns-green); padding-left: 15px; margin-bottom: 20px; }
+        h1 { font-size: 1.8rem; color: var(--ns-navy); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; text-align: center; font-weight: 800; }
+        .subtitle { color: var(--ns-text); opacity: 0.8; font-size: 1rem; margin-bottom: 40px; border-bottom: 1px solid var(--ns-border); padding-bottom: 20px; text-align: center; }
+        h2 { font-size: 1.2rem; color: var(--ns-navy); margin-top: 40px; border-left: 5px solid var(--ns-green); padding-left: 15px; margin-bottom: 25px; font-weight: 700; background: #f8f9fa; padding-top: 5px; padding-bottom: 5px; }
 
         .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 600; color: #ccd6f6; font-size: 0.9rem; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--ns-navy); font-size: 0.9rem; }
         
         input, select, textarea {
             width: 100%;
             padding: 12px;
-            background: var(--ns-hover);
-            border: 1px solid var(--ns-border);
-            color: white;
-            border-radius: 6px;
+            background: #ffffff;
+            border: 1px solid #cbd5e0;
+            color: var(--ns-text);
+            border-radius: 4px;
             box-sizing: border-box;
             font-size: 1rem;
             transition: border-color 0.3s;
         }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--ns-green); }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--ns-blue); box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1); }
 
         /* Map Button */
         #mapContainer { margin-top: 10px; display: none; }
@@ -101,9 +101,9 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: #233554;
-            color: var(--ns-green);
-            border: 1px solid var(--ns-green);
+            background: #e3f2fd;
+            color: var(--ns-blue);
+            border: 1px solid var(--ns-blue);
             padding: 10px 20px;
             border-radius: 6px;
             text-decoration: none;
@@ -111,46 +111,48 @@
             font-size: 0.9rem;
             transition: all 0.2s;
         }
-        .btn-map:hover { background: var(--ns-green); color: var(--ns-dark); }
+        .btn-map:hover { background: var(--ns-blue); color: white; }
 
-        /* Info Box (Vehicle Rules) */
+        /* Info Box */
         .info-box {
-            background: rgba(255, 171, 0, 0.1);
-            border-left: 4px solid var(--ns-info);
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 0 4px 4px 0;
-            font-size: 0.9rem;
-            color: #ffdca8;
+            background: var(--ns-info-bg);
+            border-left: 5px solid var(--ns-info-border);
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            color: #856404;
+            line-height: 1.5;
         }
 
         /* Dynamic Cards */
         .dynamic-list { display: flex; flex-direction: column; gap: 15px; }
         .dynamic-card {
-            background: rgba(0,0,0,0.2);
-            padding: 20px;
+            background: #f8f9fa;
+            padding: 25px;
             border-radius: 8px;
             border: 1px solid var(--ns-border);
             position: relative;
         }
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .card-title { color: var(--ns-green); font-weight: bold; font-size: 0.9rem; text-transform: uppercase; }
+        .card-title { color: var(--ns-navy); font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px; }
         
         .btn-remove {
-            background: transparent;
+            background: white;
             color: var(--ns-remove);
-            border: 1px solid var(--ns-remove);
-            padding: 4px 10px;
+            border: 1px solid var(--ns-border);
+            padding: 5px 12px;
             border-radius: 4px;
             font-size: 0.75rem;
             cursor: pointer;
+            font-weight: 600;
         }
-        .btn-remove:hover { background: var(--ns-remove); color: white; }
+        .btn-remove:hover { border-color: var(--ns-remove); background: #fff5f5; }
 
         .btn-add {
-            background: transparent;
-            color: var(--ns-green);
-            border: 1px dashed var(--ns-green);
+            background: white;
+            color: var(--ns-navy);
+            border: 2px dashed #cbd5e0;
             width: 100%;
             padding: 15px;
             border-radius: 8px;
@@ -158,32 +160,39 @@
             font-weight: bold;
             margin-top: 10px;
             transition: all 0.2s;
+            color: #718096;
         }
-        .btn-add:hover { background: rgba(0, 255, 157, 0.1); }
+        .btn-add:hover { border-color: var(--ns-green); color: var(--ns-green); background: #f0fff4; }
 
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 15px; }
 
         .btn-submit {
-            background-color: var(--ns-green);
-            color: var(--ns-dark);
+            background-color: var(--ns-navy);
+            color: white;
             padding: 18px 30px;
             border: none;
             border-radius: 6px;
             font-size: 1.1rem;
-            font-weight: 800;
+            font-weight: 700;
             cursor: pointer;
             width: 100%;
             margin-top: 40px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s, background 0.2s;
         }
-        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0, 255, 157, 0.2); }
+        .btn-submit:hover { background-color: #162c46; transform: translateY(-2px); }
 
-        #output-area { margin-top: 40px; display: none; }
-        #output-text { width: 100%; height: 300px; background: #050f1e; color: #00ff9d; font-family: 'Consolas', monospace; padding: 20px; border: 1px solid var(--ns-border); border-radius: 6px; }
-        .copy-btn { background: var(--ns-grey); color: var(--ns-dark); padding: 12px 25px; border: none; cursor: pointer; margin-top: 15px; font-weight: bold; border-radius: 4px; }
+        #output-area { margin-top: 40px; display: none; background: #f1f5f9; padding: 25px; border-radius: 8px; }
+        #output-text { width: 100%; height: 320px; background: white; color: #2d3748; font-family: 'Consolas', monospace; padding: 20px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 0.9rem; }
+        
+        .action-buttons { display: flex; gap: 10px; margin-top: 15px; }
+        .action-btn { flex: 1; padding: 12px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; text-align: center; text-decoration: none; display: inline-block; }
+        .copy-btn { background: #e2e8f0; color: var(--ns-navy); }
+        .copy-btn:hover { background: #cbd5e0; }
+        .email-btn { background: var(--ns-green); color: var(--ns-navy); }
+        .email-btn:hover { background: #00b874; }
 
         @media (max-width: 600px) {
             header { padding: 15px 20px; }
@@ -197,9 +206,9 @@
     <header>
         <div class="logo-container">
             <a href="https://nextstream.com" target="_blank">
-               <img src="https://nextstream.com/wp-content/themes/nextstream/assets/images/logo-nextstream-branca.svg" 
+               <img src="https://nextstream.com/wp-content/uploads/2025/06/Nextstream-azul.svg" 
                     alt="NextStream" 
-                    onerror="this.onerror=null; this.src='https://placehold.co/200x50/172a45/00ff9d?text=NEXTSTREAM&font=montserrat';">
+                    onerror="this.onerror=null; this.src='https://placehold.co/200x50/ffffff/0a192f?text=NEXTSTREAM';">
             </a>
         </div>
         <div class="lang-selector">
@@ -297,10 +306,10 @@
                     </div>
                 <button type="button" class="btn-add" onclick="addVehicle()" data-i18n="btn_add_vehicle">+ Adicionar Veículo</button>
 
-                <div style="margin-top: 30px; background: rgba(0, 255, 157, 0.05); padding: 15px; border-radius: 6px; border: 1px solid var(--ns-green);">
-                    <label style="display: flex; align-items: start; gap: 10px; cursor: pointer;">
-                        <input type="checkbox" id="safetyCheck" required style="width: 20px; height: 20px; margin-top: 2px;">
-                        <span style="font-size: 0.9rem; font-weight: normal; color: var(--ns-light);" data-i18n="safety_text">
+                <div style="margin-top: 30px; background: #e6fffa; padding: 20px; border-radius: 6px; border: 1px solid var(--ns-green);">
+                    <label style="display: flex; align-items: start; gap: 15px; cursor: pointer;">
+                        <input type="checkbox" id="safetyCheck" required style="width: 24px; height: 24px; margin-top: 2px; accent-color: var(--ns-navy);">
+                        <span style="font-size: 0.95rem; font-weight: normal; color: var(--ns-navy);" data-i18n="safety_text">
                             Declaro que a equipe está ciente das normas de segurança (EPIs obrigatórios para áreas técnicas) e que portaremos documentos originais para identificação na portaria.
                         </span>
                     </label>
@@ -310,9 +319,18 @@
             </form>
 
             <div id="output-area">
-                <h3 data-i18n="output_title">📋 DADOS PARA ENVIAR À RECEPÇÃO/SEGURANÇA</h3>
+                <h3 data-i18n="output_title">📋 DADOS PARA ENVIAR À SEGURANÇA</h3>
+                
+                <div style="margin-bottom: 10px; color: var(--ns-navy); font-weight: bold; font-size: 0.9rem;">
+                    📧 <span data-i18n="send_instruction">Por favor, envie estes dados para:</span> <a href="mailto:pfischer@nextstream.com" style="color:var(--ns-blue);">pfischer@nextstream.com</a>
+                </div>
+
                 <textarea id="output-text" readonly></textarea>
-                <button class="copy-btn" onclick="copyText()" data-i18n="btn_copy">Copiar Dados</button>
+                
+                <div class="action-buttons">
+                    <button class="action-btn copy-btn" onclick="copyText()" data-i18n="btn_copy">Copiar Texto</button>
+                    <a id="mailBtn" href="#" class="action-btn email-btn" data-i18n="btn_email">📧 Abrir E-mail e Enviar</a>
+                </div>
             </div>
         </div>
     </div>
@@ -348,8 +366,10 @@
                 btn_add_vehicle: "+ Adicionar Veículo",
                 safety_text: "Declaro que a equipe está ciente das normas de segurança (EPIs obrigatórios para áreas técnicas) e que portaremos documentos originais para identificação na portaria.",
                 btn_generate: "Gerar Solicitação de Acesso",
-                output_title: "📋 DADOS PARA ENVIAR À RECEPÇÃO/SEGURANÇA",
-                btn_copy: "Copiar Dados",
+                output_title: "📋 DADOS PARA ENVIAR À SEGURANÇA",
+                send_instruction: "Por favor, envie estes dados para:",
+                btn_copy: "Copiar Texto",
+                btn_email: "📧 Abrir E-mail e Enviar",
                 btn_remove: "Remover"
             },
             en: {
@@ -382,7 +402,9 @@
                 safety_text: "I declare the team is aware of safety rules (PPE required for technical areas) and we will carry original IDs for reception check-in.",
                 btn_generate: "Generate Access Request",
                 output_title: "📋 DATA FOR RECEPTION/SECURITY TEAM",
-                btn_copy: "Copy Data",
+                send_instruction: "Please send this data to:",
+                btn_copy: "Copy Text",
+                btn_email: "📧 Open Email to Send",
                 btn_remove: "Remove"
             },
             es: {
@@ -415,7 +437,9 @@
                 safety_text: "Declaro que el equipo conoce las normas de seguridad (EPP obligatorio en áreas técnicas) y portaremos documentos originales para identificación en recepción.",
                 btn_generate: "Generar Solicitud de Acceso",
                 output_title: "📋 DATOS PARA RECEPCIÓN/SEGURIDAD",
-                btn_copy: "Copiar Datos",
+                send_instruction: "Por favor, envíe estos datos a:",
+                btn_copy: "Copiar Texto",
+                btn_email: "📧 Abrir Correo y Enviar",
                 btn_remove: "Eliminar"
             }
         };
@@ -434,7 +458,6 @@
                 }
             });
             
-            // Atualizar botões de remover existentes
             document.querySelectorAll('.btn-remove').forEach(btn => {
                 btn.innerHTML = translations[lang]['btn_remove'];
             });
@@ -448,9 +471,9 @@
             const mapContainer = document.getElementById('mapContainer');
             const mapLink = document.getElementById('mapLink');
 
-            // Lógica para links (Você pode adicionar os outros no futuro)
+            // URL Específica para Tamboré conforme solicitado
             if (site.includes("Tamboré")) {
-                mapLink.href = "https://share.google/TTWyMGk8RG8lBE8X4";
+                mapLink.href = "https://maps.app.goo.gl/WS8yhW1PyNTcB8A79";
                 mapContainer.style.display = "block";
             } else {
                 mapContainer.style.display = "none";
@@ -519,7 +542,7 @@
 
             const val = (id) => document.getElementById(id).value;
             
-            // Coletar Visitantes (RG + CPF)
+            // Coletar Visitantes
             let visitorsStr = "";
             document.querySelectorAll('.visitor-card').forEach((card, index) => {
                 const name = card.querySelector('.vis-name').value;
@@ -565,13 +588,20 @@ ${visitorsStr}
 ${vehiclesStr}
 
 4. SAFETY DECLARATION
-[x] Aware of safety rules, PPE requirements & Reverse Parking.
+[x] Aware of safety rules, PPE & Reverse Parking.
 =================================
 `;
             const outArea = document.getElementById('output-area');
             const outText = document.getElementById('output-text');
             outText.value = report;
             outArea.style.display = 'block';
+            
+            // Configurar Botão de Email (mailto)
+            const subject = encodeURIComponent(`Acesso Data Center - ${val('companyName')}`);
+            const body = encodeURIComponent(report);
+            const mailtoLink = `mailto:pfischer@nextstream.com?subject=${subject}&body=${body}`;
+            document.getElementById('mailBtn').href = mailtoLink;
+
             outArea.scrollIntoView({behavior: "smooth"});
         }
 
@@ -579,7 +609,7 @@ ${vehiclesStr}
             const copyText = document.getElementById("output-text");
             copyText.select();
             navigator.clipboard.writeText(copyText.value);
-            alert("Copiado!");
+            alert("Copiado com sucesso!");
         }
     </script>
 
