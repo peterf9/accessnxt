@@ -94,7 +94,7 @@
         }
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--ns-green); }
 
-        /* Dynamic Cards (Visitors/Vehicles) */
+        /* Dynamic Cards */
         .dynamic-list { display: flex; flex-direction: column; gap: 15px; }
         .dynamic-card {
             background: rgba(0,0,0,0.2);
@@ -236,18 +236,12 @@
                         </div>
                         <div class="grid-2">
                             <div class="form-group">
-                                <label data-i18n="doc_type_label">Tipo Doc.</label>
-                                <select class="vis-doc-type">
-                                    <option value="RG">RG</option>
-                                    <option value="CPF">CPF</option>
-                                    <option value="CNH">CNH</option>
-                                    <option value="DNI/Cédula">DNI/Cédula (LATAM)</option>
-                                    <option value="Passaporte">Passaporte (Global)</option>
-                                </select>
+                                <label data-i18n="doc_rg_label">RG / ID / Passaporte</label>
+                                <input type="text" class="vis-doc-rg" placeholder="Doc. Identidade" required>
                             </div>
                             <div class="form-group">
-                                <label data-i18n="doc_num_label">Número Documento</label>
-                                <input type="text" class="vis-doc-num" required>
+                                <label data-i18n="doc_cpf_label">CPF</label>
+                                <input type="text" class="vis-doc-cpf" placeholder="000.000.000-00">
                             </div>
                         </div>
                     </div>
@@ -296,8 +290,9 @@
                 sec2_title: "2. Visitantes / Funcionários",
                 visitor_title: "Visitante",
                 name_label: "Nome Completo",
-                doc_type_label: "Tipo Doc.",
-                doc_num_label: "Número Documento",
+                // Labels Atualizados
+                doc_rg_label: "RG / RNE / Passaporte",
+                doc_cpf_label: "CPF",
                 btn_add_visitor: "+ Adicionar Outro Visitante",
                 sec3_title: "3. Veículos (Estacionamento)",
                 vehicle_title: "Veículo",
@@ -326,8 +321,9 @@
                 sec2_title: "2. Visitors / Employees",
                 visitor_title: "Visitor",
                 name_label: "Full Name",
-                doc_type_label: "Doc. Type",
-                doc_num_label: "Document Number",
+                // Labels Updated for Global Context
+                doc_rg_label: "ID / Passport",
+                doc_cpf_label: "Tax ID (CPF for Brazil)",
                 btn_add_visitor: "+ Add Another Visitor",
                 sec3_title: "3. Vehicles (Parking)",
                 vehicle_title: "Vehicle",
@@ -356,8 +352,9 @@
                 sec2_title: "2. Visitantes / Empleados",
                 visitor_title: "Visitante",
                 name_label: "Nombre Completo",
-                doc_type_label: "Tipo Doc.",
-                doc_num_label: "Número Documento",
+                // Labels Atualizados
+                doc_rg_label: "DNI / Pasaporte / Cédula",
+                doc_cpf_label: "CPF / Tax ID",
                 btn_add_visitor: "+ Agregar Otro Visitante",
                 sec3_title: "3. Vehículos (Estacionamiento)",
                 vehicle_title: "Vehículo",
@@ -387,7 +384,7 @@
                 }
             });
             
-            // Update remove buttons text
+            // Atualizar botões de remover existentes
             document.querySelectorAll('.btn-remove').forEach(btn => {
                 btn.innerHTML = translations[lang]['btn_remove'];
             });
@@ -400,6 +397,7 @@
             visitorCount++;
             const div = document.createElement('div');
             div.className = 'dynamic-card visitor-card';
+            // Note: Mantendo os labels atualizados (RG e CPF separados)
             div.innerHTML = `
                 <div class="card-header">
                     <span class="card-title">${translations[currentLang].visitor_title} #${visitorCount}</span>
@@ -411,18 +409,12 @@
                 </div>
                 <div class="grid-2">
                     <div class="form-group">
-                        <label>${translations[currentLang].doc_type_label}</label>
-                        <select class="vis-doc-type">
-                            <option value="RG">RG</option>
-                            <option value="CPF">CPF</option>
-                            <option value="CNH">CNH</option>
-                            <option value="DNI/Cédula">DNI/Cédula (LATAM)</option>
-                            <option value="Passaporte">Passaporte (Global)</option>
-                        </select>
+                        <label>${translations[currentLang].doc_rg_label}</label>
+                        <input type="text" class="vis-doc-rg" required>
                     </div>
                     <div class="form-group">
-                        <label>${translations[currentLang].doc_num_label}</label>
-                        <input type="text" class="vis-doc-num" required>
+                        <label>${translations[currentLang].doc_cpf_label}</label>
+                        <input type="text" class="vis-doc-cpf">
                     </div>
                 </div>
             `;
@@ -457,26 +449,28 @@
         }
 
         function generateAccessRequest() {
-            // Validation
             if(!document.getElementById('safetyCheck').checked) {
-                alert("Please acknowledge the safety rules.");
+                alert("Por favor, confirme a ciência das normas de segurança.");
                 return;
             }
 
             const val = (id) => document.getElementById(id).value;
             
-            // Collect Visitors
+            // Coletar Visitantes (RG + CPF)
             let visitorsStr = "";
             document.querySelectorAll('.visitor-card').forEach((card, index) => {
                 const name = card.querySelector('.vis-name').value;
-                const type = card.querySelector('.vis-doc-type').value;
-                const num = card.querySelector('.vis-doc-num').value;
+                const rg = card.querySelector('.vis-doc-rg').value;
+                const cpf = card.querySelector('.vis-doc-cpf').value;
+                
                 if(name) {
-                    visitorsStr += `   ${index + 1}. ${name} | ${type}: ${num}\n`;
+                    // Formatação condicional: se tiver CPF, mostra. Se não, mostra só RG/ID.
+                    const docString = cpf ? `RG: ${rg} | CPF: ${cpf}` : `ID: ${rg}`;
+                    visitorsStr += `   ${index + 1}. ${name} [${docString}]\n`;
                 }
             });
 
-            // Collect Vehicles
+            // Coletar Veículos
             let vehiclesStr = "";
             const vehCards = document.querySelectorAll('.vehicle-card');
             if (vehCards.length === 0) {
